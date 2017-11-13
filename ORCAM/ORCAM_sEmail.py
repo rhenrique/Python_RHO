@@ -36,6 +36,8 @@ ins_date = time.strftime("%Y%m%d")
 ## Versão 0.2 - Alterado para considerar por CC;
 ## Versão 0.3 - Bug fixes: considerar apenas enviar email quando há registro na string body
 ## Versão 0.4 - Alterado corpo do e-mail, bug fixes
+## Versão Main 1.0 - Compilado para uso e adicionado logs
+## Versão 1.1 - Adicionado controle ConfigParser - arquivo de configuração
  
 parser = SafeConfigParser()
 parser.read('ORCAM_EMAIL.ini')
