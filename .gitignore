@@ -1,0 +1,14 @@
+
+*.csv
+ORCAM/cUser.py
+ORCAM/cube.py
+ORCAM/forecas_ori.xlsx
+ORCAM/ORCAM_LMS.TXT
+ORCAM/output_file.txt
+ORCAM/pyodbc-4.0.17-cp36-cp36m-win32.whl
+ORCAM/pyodbc-4.0.17-cp36-cp36m-win32/pyodbc-4.0.17.dist-info/DESCRIPTION.rst
+ORCAM/pyodbc-4.0.17-cp36-cp36m-win32/pyodbc-4.0.17.dist-info/METADATA
+ORCAM/~$mapa_despesas.xlsx
+ORCAM/pyodbc-4.0.17-cp36-cp36m-win32/pyodbc.cp36-win32.pyd
+ORCAM/pyodbc-4.0.17-cp36-cp36m-win32/pyodbc-4.0.17.dist-info/top_level.txt
+ORCAM/pyodbc-4.0.17-cp36-cp36m-win32/pyodbc-4.0.17.dist-info/metadata.json
