@@ -46,23 +46,26 @@ emailfrom = "ORCAM_report@maxionwheels.com"
 server = parser.get('amb_orcam', 'server')
 #database = 'TEST_ORCAM_LMS'
 username = parser.get('amb_orcam', 'user_db')
-password = 'MaxionHOM123@'
+password = 'Maxion123@'
 driver = '{SQL Server}' # Driver necessário para conecta ao banco de dados do MSSQL
 port = '1433'
 forecast = parser.get('forecast','forecast')
 print forecast
+fb_value = float(0)
+fb_value = float(0)
 
 		
 def app(cnn, cursor):
+	global fb_value
 	row = cursor.execute("select * from Grupos")
 	i = 0
 	body = []
 	for row in cursor.fetchall():
 		body = []
 		for owner in cursor.execute("select * from orcam INNER JOIN Grupos ON orcam.Grupo = Grupos.Grupo INNER JOIN ccustob ON ccustob.CcustoB = orcam.Ccusto where orcam.Grupo=? and anomes=?", row.Grupo, cdate):
-			if forecast == 1:
+			if forecast == '1':
 				fb_value = owner.Vr_Forecast
-			elif forecast == 0:
+			elif forecast == '0':
 				fb_value = owner.Vr_Budget
 			try:
 				percFor = (fb_value / 100) * 80
@@ -116,6 +119,7 @@ def app(cnn, cursor):
 	ccresp(cnn, cursor)
 
 def ccresp(cnn, cursor):
+	global fb_value
 	row = cursor.execute("select * from ccusto where ccusto >= '0100'")
 	i = 0
 	body = []
