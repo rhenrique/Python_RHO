@@ -28,16 +28,18 @@ msg["Subject"] = "ORCAM: Relatorio de Carga"
 """
 Open and read an Excel file
 """
-path = "mapa_despesas.xlsx"
-cdate = time.strftime("%Y%m")
-mes = time.strftime("%m")
+path = "Pasta1.xlsx"
+#cdate = time.strftime("%Y%m")
+cdate = '201711'
+#mes = time.strftime("%m")
+mes = '11'
 cmonth = int(mes)
-server = 'LIM-SQL12QA1'
+server = 'LIM-SQL12P1'
 username = 'dsserver'
-password = 'MaxionHOM123@'
+password = 'Maxion123@'
 driver = '{SQL Server}'
 port = '1433'
-database = 'TEST_ORCAM_LMS'
+database = 'PROD_ORCAM_LMS'
 param = 0
 cnn = pyodbc.connect('DRIVER='+driver+';PORT=port;SERVER='+server+';PORT=1443;DATABASE='+database+';UID='+username+';PWD='+password, autocommit=True)
 cnn.setencoding(str, encoding='utf-8')
@@ -52,9 +54,9 @@ book = xlrd.open_workbook(path)
 
 # get the first worksheet
 out = open("output_file.txt", "w")
-for read in cursor.execute("select * from ccusto where ccusto = '0151'").fetchall():
+for read in cursor.execute("select * from ccusto where ccusto >= '0100'").fetchall():
 	start = int(33 + cmonth)
-	initial = 33 + cmonth
+	initial = 19 + cmonth
 	end = int(34 + cmonth)
 	c_custo = str(read.Ccusto[-3:])
 	print c_custo
@@ -75,7 +77,8 @@ for read in cursor.execute("select * from ccusto where ccusto = '0151'").fetchal
 				if chk == None:
 					print "Nao ha grupo " + grupo + " no CC " + c_custo
 				else:
-					print "chegou aqui"
+					#print "chegou aqui"
+					#print initial
 					cell2 = first_sheet.cell(44,initial)
 					cells2 = first_sheet.col_slice(colx=30,start_rowx=start,end_rowx=end)
 					for cell2 in cells2:
