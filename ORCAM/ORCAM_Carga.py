@@ -69,7 +69,6 @@ def carga(cursor, database, book):
 		initial = 19 + cmonth # Começa na coluna T + mês atual
 		end = int(45) # Fim da linha (valor incremental)
 		c_custo = str(read.Ccusto[-3:])
-		print c_custo
 		try:
 			first_sheet = book.sheet_by_name(c_custo)
 		except:
@@ -79,22 +78,15 @@ def carga(cursor, database, book):
 		for cell in cells:
 			grupo = '0'+str(cell.value[2:-4])
 			for c_grupo in cursor.execute("select * from Grupos").fetchall():
-				#print "Planilha: " + grupo
-				#print "Banco de Dados: " + c_grupo.Grupo
 				if grupo == c_grupo.Grupo:
 					chk = cursor.execute("select * from orcam where anomes=? and Ccusto=? and Grupo=?",cdate, '0'+c_custo, grupo).fetchone()
-					#print cdate + c_custo + grupo
 					if chk == None:
 						print "Nao ha grupo " + grupo + " no CC " + c_custo
 					else:
-						#print "chegou aqui"
-						#print initial
 						cell2 = first_sheet.cell(44,initial)
 						cells2 = first_sheet.col_slice(colx=initial,start_rowx=start,end_rowx=end)
 						for cell2 in cells2:
 							forecast = float("%0.2f" % (cell2.value))
-							#forecast = str("%0.2f" % (cell2.value))
-							print forecast
 							try:
 								print "Parametro: 0 CC: " + c_custo + " Grupo: " + grupo + " Ano/Mes: " + cdate + " Forecast: " + str(forecast)
 								cursor.execute("update dbo.orcam set Tx_Forecast=0, Vr_Forecast=? where Ccusto=? and Grupo=? and Anomes=?", forecast, '0'+c_custo, grupo, cdate)
