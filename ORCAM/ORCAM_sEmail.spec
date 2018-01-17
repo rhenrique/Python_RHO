@@ -4,7 +4,7 @@ block_cipher = None
 
 
 a = Analysis(['ORCAM_sEmail.py'],
-             pathex=['c:\\Users\\oliveirh\\Documents\\GitHub\\Python_RHO\\ORCAM'],
+             pathex=['C:\\Users\\oliveirh\\Documents\\GitHub\\Python_RHO\\ORCAM'],
              binaries=[],
              datas=[],
              hiddenimports=[],
@@ -26,4 +26,4 @@ exe = EXE(pyz,
           strip=False,
           upx=True,
           runtime_tmpdir=None,
-          console=True )
+          console=True , icon='ORC_icon.ico')

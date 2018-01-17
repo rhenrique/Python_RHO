@@ -1,6 +1,7 @@
 # encoding: utf-8
 # encoding: iso-8859-1
 # encoding: win-1252
+## COMPILAR: pyinstaller.exe --onefile --icon=ORC_icon.ico ORCAM_sEmail.py
 import pyodbc
 import sys
 import smtplib
@@ -36,21 +37,27 @@ ins_date = time.strftime("%Y%m%d")
 ## Versão 0.2 - Alterado para considerar por CC;
 ## Versão 0.3 - Bug fixes: considerar apenas enviar email quando há registro na string body
 ## Versão 0.4 - Alterado corpo do e-mail, bug fixes
-## Versão Main 1.0 - Compilado para uso e adicionado logs
+## Versão 1.0 - Compilado para uso e adicionado logs
 ## Versão 1.1 - Adicionado controle ConfigParser - arquivo de configuração
+## Versão 1.2 - Bug fixes: 
+##						- Aspas simples estava faltando na função 'ccresp' / 11/01/2018
+##						- Adicionado if/else para identificação de ambiente entre PROD e HOM / 11/01/2018
  
 parser = SafeConfigParser()
 parser.read('ORCAM_EMAIL.ini')
  
 emailfrom = "ORCAM_report@maxionwheels.com"
 server = parser.get('amb_orcam', 'server')
+database = parser.get('amb_orcam','database')
 #database = 'TEST_ORCAM_LMS'
 username = parser.get('amb_orcam', 'user_db')
-password = 'Maxion123@'
+if database == 'PROD_ORCAM_LMS':
+	password = 'Maxion123@'
+else:
+	password = 'MaxionHOM123@'
 driver = '{SQL Server}' # Driver necessário para conecta ao banco de dados do MSSQL
 port = '1433'
 forecast = parser.get('forecast','forecast')
-print forecast
 fb_value = float(0)
 fb_value = float(0)
 
@@ -126,9 +133,9 @@ def ccresp(cnn, cursor):
 	for row in cursor.fetchall():
 		body = []
 		for owner in cursor.execute("select * from orcam INNER JOIN Ccusto ON orcam.Ccusto = Ccusto.Ccusto INNER JOIN grupos ON grupos.Grupo = orcam.Grupo where orcam.Ccusto=? and anomes=?", row.Ccusto, cdate):
-			if forecast == 1:
+			if forecast == '1':
 				fb_value = owner.Vr_Forecast
-			elif forecast == 0:
+			elif forecast == '0':
 				fb_value = owner.Vr_Budget
 			try:
 				percFor = (fb_value / 100) * 80
@@ -176,7 +183,6 @@ def ccresp(cnn, cursor):
 def conn(ambiente):
 	if ambiente == "aco":
 		database = parser.get('amb_orcam','database')
-		print database
 		cnn = pyodbc.connect('DRIVER='+driver+';PORT=port;SERVER='+server+';PORT=1443;DATABASE='+database+';UID='+username+
 					';PWD='+password)
 		cnn.setencoding(str, encoding='utf-8')

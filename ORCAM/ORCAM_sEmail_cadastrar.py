@@ -4,9 +4,6 @@
 import pyodbc
 import sys
 import os
-from docx import Document
-from docx.shared import Inches
-from docx.shared import Pt
 import smtplib
 import mimetypes
 import shutil
@@ -47,7 +44,7 @@ def quest(cursor):
 	print u" - Rafael Oliveira"
 	print u" - Contato: rafael.oliveira@maxionwheels.com - (19) 3404-2360"
 	print "*******************************************************************\n"
-	quest01 = raw_input(u"Por favor, escolha uma opcao:\n\nCADASTRAR...\n- [1] - cadastrar um novo responsavel para um Centro de Custo;\n- [2] - cadastrar um novo responsavel para uma Conta Conatbil;\n\nREMOVER...\n- [3] - remover um responsavel por um CC especifico;\n- [4] - remover um responsavel por uma Conta Contabil especifica.\n\nLISTAR... \n- [5] - Listar responsavel por um CC especifico.\n- [6] - Listar responsavel por uma Conta especifica\n")
+	quest01 = raw_input(u"Por favor, escolha uma opcao:\n\nCADASTRAR...\n- [1] - cadastrar um novo responsavel para um Centro de Custo;\n- [2] - cadastrar um novo responsavel para uma Conta Conatbil;\n\nREMOVER...\n- [3] - remover um responsavel por um CC especifico;\n- [4] - remover um responsavel por uma Conta Contabil especifica.\n\nLISTAR... \n- [5] - Listar responsavel por um CC especifico.\n- [6] - Listar responsavel por uma Conta especifica\n- [7] - Listar CC e Conta responsavel por email\n")
 	if quest01 == '1':
 		os.system('cls') 
 		print u"Voce escolheu a opcao 1, portanto, vamos cadastrar um novo responsavel para Centro de Custo\n"
@@ -190,7 +187,20 @@ def quest(cursor):
 		for listall in cursor.execute("select grupo_resp.grupo, grupo_email.id, grupo_email.email from grupo_resp inner join grupo_email on grupo_resp.resp = grupo_email.id where grupo_resp.grupo =? order by grupo_email.id", quest02):
 			print u" - Conta: " + str(listall[0]) + " ID: " + str(listall[1]) + u" E-mail: " + str(listall[2])
 		print "*******************************************************************"
-		time.sleep(5)	
+		time.sleep(5)		
+	elif quest01 == '7':
+		os.system('cls')
+		print u"Voce escolheu a opcao 7, portanto, vamos listar os responsaveis por email\n"
+		quest02 = raw_input(u"Digite o email para qual gostaria de ver todos os acessos da pessoa. \nExemplo: rafael.oliveira@maxionwheels.com\n")
+		os.system('cls')
+		print "\n\n*******************************************************************"
+		for listall in cursor.execute("select cc_resp.cc, ccusto.descricao, cc.email from cc_resp inner join cc_email cc ON cc.id = cc_resp.resp inner join ccustob ccusto ON ccusto.ccustob = cc_resp.cc COLLATE SQL_Latin1_General_CP1_CI_AS where cc.email =?", quest02):
+			print u" - CC: " + str(listall[0]) +  "- " + str(listall[1]) +  u" - E-mail: " + str(listall[2])
+		print "*******************************************************************\n\n"
+		for listall in cursor.execute("select grupo_resp.grupo, grupos.descricao, grupo.email from grupo_resp inner join grupo_email grupo ON grupo.id = grupo_resp.resp inner join grupos grupos ON grupos.grupo = grupo_resp.grupo COLLATE SQL_Latin1_General_CP1_CI_AS where grupo.email =?", quest02):
+			print u" - CC: " + str(listall[0]) +  " - " + str(listall[1]) + u" - E-mail: " + str(listall[2])
+		print "*******************************************************************\n\n"
+		time.sleep(5)
 	else:
 		print u"Você digitou uma opcao invalida. Por favor, recomece!"
 		time.sleep(3)

@@ -1,4 +1,4 @@
-('c:\\Users\\oliveirh\\Documents\\GitHub\\Python_RHO\\ORCAM\\build\\ORCAM_sEmail\\out00-PYZ.pyz',
+('C:\\Users\\oliveirh\\Documents\\GitHub\\Python_RHO\\ORCAM\\build\\ORCAM_sEmail\\out00-PYZ.pyz',
  [('encodings.aliases',
    'c:\\users\\oliveirh\\appdata\\local\\conda\\conda\\envs\\python27\\lib\\encodings\\aliases.py',
    'PYMODULE'),
