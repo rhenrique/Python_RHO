@@ -12,7 +12,9 @@ import sys
 import re
 
 i = 0
+# Identifica o usuário que está logado e passa para a variável c_user
 c_user = getpass.getuser()
+# Caminho do arquivo de exceções do JAVA
 java_path =  os.path.join('C:\\', 'Users',c_user, 'AppData', 'LocalLow', 'Sun', 'Java', 'Deployment', 'security')
 
 #Verifica se ha Java 64-bit instalado
@@ -25,6 +27,7 @@ except Exception:
 	print "Java 64-bit nao instalado...."
 	jre64 = 'aa'
 
+#Verifica se ha duas ou mais versões do Java. Se não houver nenhuma, ele instala uma versão.
 try:
 	j_version = os.listdir('C:\\Program Files (x86)\Java')
 	for j_version in j_version:
@@ -44,7 +47,9 @@ except Exception:
 	j_version = 'aa'
 	time.sleep(5)
 	
-	
+#Verifica se a versão do java que está instalado é a 6:
+# >> Se for: ele não copia as informações de exceções do Java, pois a versão 6 não há esse tipo de exceção
+# >> Se não for: ele copia as informações de exceção do Java para a pasta correta.	
 if j_version != 'jre6':
 	try:
 		subprocess.check_output(['javaws','-uninstall'])
@@ -60,6 +65,8 @@ else:
 
 PROCNAME = "iexplore.exe"
 
+# Verifica processo a processo se há algum aberto para PROCNAME
+# Se houver, ele finaliza!
 for proc in psutil.process_iter():
 	# check whether the process name matches
 	if proc.name() == PROCNAME:
@@ -73,10 +80,12 @@ for proc in psutil.process_iter():
 arr = []
 arr = glob.glob("*.reg")
 
+# Importa todos os .reg na pasta RAIZ do Programa
 for file in arr:
 	print file
 	subprocess.call(['reg','import',file])
-	
+
+# Abre o IEXPLORE.EXE para o site do IMAX. Passo final do programa!	
 ie = webbrowser.get(webbrowser.iexplore)
 ie.open('http://imax.maxionwheels.com')
 time.sleep(3)
