@@ -61,13 +61,14 @@ pyautogui.press('enter')
 time.sleep(3)
 pyautogui.press('1')
 pyautogui.press('enter')
+if a[num] == '128':
+	pyautogui.press('1')
+else:
+	pyautogui.press('2')
 
 for item in n:
-	time.sleep(2)
-	if a[num] == '128':
-		pyautogui.press('1')
-	else:
-		pyautogui.press('2')
+	time.sleep(3)
+	pyautogui.typewrite(a[num])
 	pyautogui.press('enter')
 	time.sleep(3)
 	pyautogui.press('enter')
@@ -105,8 +106,9 @@ for item in n:
 	pyautogui.press('enter')
 	time.sleep(1)
 	pyautogui.press(['enter','enter','enter'])
-	time.sleep(2)
+	time.sleep(3)
 	pyautogui.typewrite(a[num])
+	time.sleep(5)
 	pyautogui.press('enter')
 	pyautogui.press(['enter','enter'])
 	pyautogui.typewrite('s')
@@ -123,6 +125,8 @@ for item in n:
 	time.sleep(1)
 	print num
 	num = num + 1
+	
+num = 0
 	
 	
 
