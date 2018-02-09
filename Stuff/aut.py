@@ -16,52 +16,131 @@ from email.mime.image import MIMEImage
 from email.mime.text import MIMEText
 import shutil
 import subprocess
-import datetime
+from datetime import timedelta
+from datetime import date
+import os
 
 
 n = []
 l = []
 a = []
+g = []
+global login
+global w
 
 num = 0
 
-def quest():
+fdate = time.strftime("%Y%m%d")
+fl = "CreateUser_LIM" + fdate + ".docx" 
+cdate = date.today() + timedelta(days=5)
+
+document = Document()
+f = open(fl, 'w')
+
+document.add_heading('Maxion Wheels - Create user in Linux', 0)
+document.add_paragraph('To-Do List', style='Heading 1').bold = True
+
+p = document.add_paragraph(' - These users should have ')
+p.add_run('gid=60005(qad)').bold = True
+p.add_run(' and ')
+p.add_run('groups=60005(qad).\n').bold = True
+p.add_run(' - Copy the')
+p.add_run(' .bash_profile ').bold = True
+p.add_run(' and ')
+p.add_run('.profile').bold = True
+p.add_run(' files from')
+p.add_run(' /usr/br/nascimra ').bold = True
+p.add_run(' to each new user created, or our start script will not work.\n')
+
+table = document.add_table(1, 5, style='Light List Accent 1')
+
+hdr_cells = table.rows[0].cells
+hdr_cells[0].text = 'User (Login)'
+hdr_cells[1].text = 'Name'
+hdr_cells[2].text = 'Site'
+hdr_cells[3].text = 'Home Directory'
+hdr_cells[4].text = 'Servers'
+
+def quest(num):
 	nome = raw_input("Digite o nome da pessoa:\n ")
 	n.append(nome)
 	login = raw_input("Digite o login da pessoa:\n ")
 	l.append(login)
+	
+	recordset =	[
+		{
+			"user" : login,
+			"name": "(LIM) " + nome,
+			"site": "LIM",
+			"home": "/users/br",
+			"servers": "mxw-qadpl01 / mxw-qaddl01"
+		}
+	]
+
+
+	for item in recordset:
+		row_cells = table.add_row().cells
+		row_cells[0].text = item["user"]
+		row_cells[1].text = item["name"]
+		row_cells[2].text = item["site"]
+		row_cells[3].text = item["home"]
+		row_cells[4].text = item["servers"]
+		
 	amb = raw_input("Escolha um ambiente:\n - [128] - ACO;\n - [130] - Aluminio.\n")
+	while amb != '128' and amb != '130':
+		amb = raw_input("Escolha entre [128] e [130]:\n")
 	a.append(amb)
+	askgrupo = raw_input("Deseja adicionar grupo para a pessoa?\n- [s] - SIM;\n- [n] - NAO\n ")
+	while askgrupo != 's' and askgrupo != 'n':
+		askgrupo = raw_input('Digite [s] ou [n]:\n')
+	if askgrupo == 's':
+		login = str(l[num]) + '.txt'
+		w = open(login, 'w')
+		while askgrupo == 's':
+			grupo = raw_input("Digite o grupo da pessoa:\n ")
+			w.write(grupo + '\n')
+			askgrupo = raw_input("Deseja continuar adicionando?\n- [s] - SIM;\n- [n] - NAO\n ")
+			while askgrupo != 's' and askgrupo != 'n':
+				askgrupo = raw_input('Digite [s] ou [n]:\n')
+			if askgrupo == 'n':
+				w.close()
+				small_file = open(login,'r')
+				long_file = open('grupos.txt','r')
+				output_file = open(str(l[num]) + '_QAD.txt','w')
+
+				try:
+					small_lines = small_file.readlines()
+					small_lines_cleaned = [line.rstrip().lower() for line in small_lines]
+					long_file_lines = long_file.readlines()
+					long_lines_cleaned = [line.rstrip().lower() for line in long_file_lines]
+					
+					for line in small_lines_cleaned:
+						if line in long_lines_cleaned:
+							output_file.writelines(line + '\n')
+							
+				finally:
+					small_file.close()
+					long_file.close()
+					output_file.close()
 
 def ask():
     newline = raw_input("Adicionar mais usuarios?\n- [s] - para SIM;\n- [n] - para NAO.\n")
     return newline
 
-quest()
+quest(num)
+
+		
 yn = ask()
 while (yn == 's'):
-	quest()
+	num = num + 1
+	quest(num)
 	yn = ask()
 	if (yn == 'n'):
 		break
 	else:
 		True
-	
 
-
-
-#note = pyautogui.locateCenterOnScreen('imagens/notepad.png')
-#print note
-#pyautogui.click(note)
-#note = pyautogui.locateCenterOnScreen('imagens/notepad_1.png')
-#print note
-
-#Primeira linha
-#pyautogui.moveTo(note)
-#pyautogui.moveRel(-42, 40)
-#pyautogui.click()
-#pyautogui.dragRel(50, 0, 2, button='left')
-#pyautogui.hotkey('ctrl', 'c')
+time.sleep(1)
 pyautogui.hotkey('winleft','d')
 
 #Abrindo o QAD
@@ -69,7 +148,7 @@ pyautogui.press(['Q','A','D','-','P','R','O','D'])
 pyautogui.press('enter')
 
 #Logando no QAD
-time.sleep(4)
+time.sleep(10)
 pyautogui.typewrite('oliveirh')
 pyautogui.press('enter')
 time.sleep(1)
@@ -78,20 +157,26 @@ pyautogui.press('enter')
 time.sleep(3)
 pyautogui.press('1')
 pyautogui.press('enter')
+
 if a[num] == '128':
 	pyautogui.press('1')
+	pyautogui.press('enter')
 else:
 	pyautogui.press('2')
+	pyautogui.press('enter')
 
+num = 0
 for item in n:
 	time.sleep(3)
-	pyautogui.typewrite(a[num])
+	if num > 0:
+		pyautogui.typewrite(a[num])
+		pyautogui.press('enter')
+		time.sleep(3)
 	pyautogui.press('enter')
 	time.sleep(3)
-	pyautogui.press('enter')
-	time.sleep(3)
-	pyautogui.press('enter')
-	time.sleep(3)
+	if num == 0:
+		pyautogui.press('enter')
+		time.sleep(3)
 	pyautogui.typewrite('36.3.1')
 	pyautogui.press('enter')
 	time.sleep(3)
@@ -123,81 +208,46 @@ for item in n:
 	pyautogui.press('enter')
 	time.sleep(1)
 	pyautogui.press(['enter','enter','enter'])
-	time.sleep(3)
+	time.sleep(1)
+	pyautogui.press('enter')
+	time.sleep(5)
 	pyautogui.typewrite(a[num])
 	time.sleep(5)
 	pyautogui.press('enter')
 	pyautogui.press(['enter','enter'])
-	pyautogui.typewrite('s')
-	pyautogui.press('enter')
+	
+	# Verifica se o arquivo login_QAD.txt existe
+	file = os.path.isfile(l[num]+ '_QAD.txt')
+	type(file)
+	if file == True:
+		print 'entrou aqui?'
+		with open(l[num] + '_QAD.txt') as f:
+			groupList = f.readlines()
+			for line in groupList:
+				group = line.rstrip('\n')
+				time.sleep(2)
+				pyautogui.typewrite(group)
+				time.sleep(1)
+				pyautogui.press('enter')
+				time.sleep(1)
+			f.close()
 	pyautogui.press('f4')
+	time.sleep(1)
 	pyautogui.press('f4')
+	time.sleep(1)
 	pyautogui.typewrite('s')
 	pyautogui.press('enter')
 	time.sleep(1)
 	pyautogui.press('f4')
+	time.sleep(1)
 	pyautogui.press('enter')
 	time.sleep(1)
 	pyautogui.hotkey('ctrl', 'c')
 	time.sleep(1)
-	print num
 	num = num + 1
 	
 num = 0
 
-
-#fl = "CreateUser_LIM" + fdate + ".docx" 
-fdate = time.strftime("%m/%d/%y")
-date_1 = datetime.datetime.strptime(fdate, "%m/%d/%y")
-
-cdate = date_1 + datetime.timedelta(days=5)
-print cdate
-
-document = Document()
-f = open(fl, 'w')
-
-document.add_heading('Maxion Wheels - Create user in Linux', 0)
-
-for item in n:
-	recordset =	[
-		{
-			"user" : l(num),
-			"name": "(LIM) " + n(num),
-			"site": "LIM",
-			"home": "/users/br",
-			"servers": "mxw-qadpl01 / mxw-qaddl01"
-		}
-	]
-
-for item in recordset:
-	row_cells = table.add_row().cells
-	row_cells[0].text = item["user"]
-   	row_cells[1].text = item["name"]
-   	row_cells[2].text = item["site"]
-   	row_cells[3].text = item["home"]
-   	row_cells[4].text = item["servers"]
-
-document.add_paragraph('To-Do List', style='Heading 1').bold = True
-p = document.add_paragraph(' - These users should have ')
-p.add_run('gid=60005(qad)').bold = True
-p.add_run(' and ')
-p.add_run('groups=60005(qad).\n').bold = True
-p.add_run(' - Copy the')
-p.add_run(' .bash_profile ').bold = True
-p.add_run(' and ')
-p.add_run('.profile').bold = True
-p.add_run(' files from')
-p.add_run(' /usr/br/nascimra ').bold = True
-p.add_run(' to each new user created, or our start script will not work.\n')
-
-table = document.add_table(1, 5, style='Light List Accent 1')
-
-hdr_cells = table.rows[0].cells
-hdr_cells[0].text = 'User (Login)'
-hdr_cells[1].text = 'Name'
-hdr_cells[2].text = 'Site'
-hdr_cells[3].text = 'Home Directory'
-hdr_cells[4].text = 'Servers'
 
 document.add_page_break()
 document.save(fl)
@@ -212,7 +262,7 @@ msg["From"] = emailfrom
 msg["To"] = emailto
 msg["Subject"] = "MW - Linux team - Create user in Linux"
 
-body = u"""<html><head> <font face="Calibri" size="3" color = "black"></head> <body> Hello S-24, <br><br>Please, see attached to create user in Linux.<br> Complete it until """ + cdate + """</body></html>"""
+body = u"""<html><head> <font face="Calibri" size="3" color = "black"></head> <body> Hello S-24, <br><br>Please, see attached to create user in Linux.<br> Complete it until """ + str(cdate) + """</body></html>"""
 #msg.attach(MIMEText(body))
 msg.attach(MIMEText(body, 'html', 'utf-8'))
 
@@ -261,49 +311,3 @@ networkPath = r'O:\Controle de Acesso - B5_15\Solicitacao de Acesso - QAD\2017\\
 shutil.copy2(fl, networkPath + fl)
 print "The file " + fl +  " created was moved to " + networkPath
 time.sleep(5)
-
-
-	
-	
-
-
-
-
-
-
-
-	
-	
-	
-	
-	
-
-
-
-
-#pyautogui.press('u')
-#pyautogui.press('enter')
-#time.sleep(1)
-#pyautogui.typewrite('sudo passwd oliveirh')
-#pyautogui.press('enter')
-#time.sleep(1)
-#pyautogui.typewrite('312414ra@#') 
-#pyautogui.press('enter')
-#time.sleep(1)
-#pyautogui.typewrite('312414ra@#') 
-#pyautogui.press('enter')
-#time.sleep(1)
-#pyautogui.typewrite('312414ra@#')
-#pyautogui.press('enter')
-#time.sleep(1)
-#pyautogui.typewrite('exit')
-#pyautogui.press('enter') 
-
-
-
-
-
-#Segunda linha
-#pyautogui.moveTo(data)
-#pyautogui.moveRel(-42, 60)
-#pyautogui.dragRel(250, 0, 2, button='left')

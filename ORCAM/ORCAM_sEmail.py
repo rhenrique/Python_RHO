@@ -20,6 +20,7 @@ import os
 from distutils.core import setup
 from ConfigParser import SafeConfigParser
 import glob
+import socket
 
 #Variável que recebe o ano e o mês atual no formato 'YYYYMM'
 cdate = time.strftime("%Y%m")
@@ -42,9 +43,13 @@ ins_date = time.strftime("%Y%m%d")
 ## Versão 1.2 - Bug fixes: 
 ##						- Aspas simples estava faltando na função 'ccresp' / 11/01/2018
 ##						- Adicionado if/else para identificação de ambiente entre PROD e HOM / 11/01/2018
+## Versão 1.3 - Bug fixes: alterado o except, pois a sintaxe correta era "socket.error"; 05/02/2018
+##						   Ao rodar pelo Task Scheduler do Windows, ele não identificava o caminho do ORCAM_EMAIL.ini, criado uma string com o diretório atual
  
 parser = SafeConfigParser()
-parser.read('ORCAM_EMAIL.ini')
+currentdir = 'C:\\ORCAM_Email\\'
+print currentdir
+parser.read(currentdir + 'ORCAM_EMAIL.ini')
  
 emailfrom = "ORCAM_report@maxionwheels.com"
 server = parser.get('amb_orcam', 'server')
@@ -106,7 +111,7 @@ def app(cnn, cursor):
 				server.starttls()
 				try:
 					server.sendmail(emailfrom, emailto.split(';'), msg.as_string())
-				except SocketError:
+				except socket.error:
 					print u"Nao foi possivel conectar ao servidor"
 					cursor.execute("INSERT INTO logs VALUES (?, ?, ?, 'Erro ao conectar no servidor');", ins_date, ins_grupo, sent)
 					cursor.commit()
@@ -167,7 +172,7 @@ def ccresp(cnn, cursor):
 				server.starttls()
 				try:
 					server.sendmail(emailfrom, emailto.split(';'), msg.as_string())
-				except SocketError:
+				except socket.error:
 					print u"Nao foi possivel conectar ao servidor"
 					cursor.execute("INSERT INTO logs VALUES (?, ?, ?, 'Email enviado com sucesso');", ins_date, ins_cc, sent)
 					cursor.commit()

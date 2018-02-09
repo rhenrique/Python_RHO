@@ -1,7 +1,7 @@
 missing module named 'org.python' - imported by copy
-missing module named pwd - imported by posixpath, getpass, shutil, tarfile, distutils.util, distutils.archive_util
 missing module named fcntl - imported by tempfile, subprocess
 missing module named readline - imported by cmd, pdb
+missing module named pwd - imported by posixpath, getpass, shutil, tarfile, distutils.util, distutils.archive_util
 missing module named grp - imported by shutil, tarfile, distutils.archive_util
 missing module named riscosenviron - imported by os
 missing module named riscospath - imported by os

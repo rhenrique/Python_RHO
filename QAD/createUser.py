@@ -55,10 +55,10 @@ def quest():
 	for item in recordset:
 		row_cells = table.add_row().cells
 		row_cells[0].text = item["user"]
-    	row_cells[1].text = item["name"]
-    	row_cells[2].text = item["site"]
-    	row_cells[3].text = item["home"]
-    	row_cells[4].text = item["servers"]
+		row_cells[1].text = item["name"]
+		row_cells[2].text = item["site"]
+		row_cells[3].text = item["home"]
+		row_cells[4].text = item["servers"]
 	return emailto
 
 def ask():
