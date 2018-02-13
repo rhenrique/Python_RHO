@@ -1,7 +1,0 @@
-<pdfxml Producer="Adolix Split &amp; Merge PDF" Author="Adolix Split &amp; Merge PDF" Title="Output file" Creator="Adolix Split &amp; Merge PDF Driver" ModDate="D:20180112160903+02'00'" Keywords="" CreationDate="D:20180112160903+02'00'" Subject="">
-  <LTPage bbox="[0, 0, 612, 792]" height="792" pageid="1" rotate="0" width="612" x0="0" x1="612" y0="0" y1="792" page_index="0" page_label="">
-    <LTImage bbox="[0.0, 0.0, 612.0, 792.0]" bits="8" colorspace="[&quot;/DeviceRGB&quot;]" height="792.0" imagemask="null" name="Im3" srcsize="[1275, 1650]" stream="&lt;PDFStream(9): raw=189419, {'Width': 1275, 'ColorSpace': /DeviceRGB, 'Height': 1650, 'Filter': /DCTDecode, 'Subtype': /Image, 'Length': 189418, 'Type': /XObject, 'BitsPerComponent': 8}&gt;" width="612.0" x0="0.0" x1="612.0" y0="0.0" y1="792.0">
-      <LTFigure bbox="[0.0, 0.0, 612.0, 792.0]" height="792.0" matrix="[612.0, 0.0, 0.0, 792.0, 0.0, 0.0]" name="Im3" width="612.0" x0="0.0" x1="612.0" y0="0.0" y1="792.0"/>
-    </LTImage>
-  </LTPage>
-</pdfxml>
