@@ -48,6 +48,7 @@ password = 'Maxion123@'
 driver = '{SQL Server}' # Driver necessário para conecta ao banco de dados do MSSQL
 port = '1433'
 emailto = 'alex.bacalhau@maxionwheels.com;gilberto.ferreira@maxionwheels.com;marcos.degaspre@maxionwheels.com'
+#emailto = 'rafael.oliveira@maxionwheels.com'
 
 def conn(ambiente):
 	if ambiente == "aco":
@@ -68,7 +69,7 @@ def conn(ambiente):
 		ambAlum(cnn, cursor)
 
 def ambAlum(cnn, cursor):
-	row = cursor.execute("select * from Grupos where grupo = '0411' or grupo = '0412' or grupo = '0416' or grupo = '0462' or grupo = '0469' or grupo = '0499' or grupo = '0500' or grupo = '0480' or grupo = '0481' or grupo = '0482' or grupo = '0496'")
+	row = cursor.execute("select * from Grupos where grupo = '0411' or grupo = '0412' or grupo = '0415' or grupo = '0416' or grupo = '0462' or grupo = '0469' or grupo = '0499' or grupo = '0500' or grupo = '0480' or grupo = '0481' or grupo = '0482' or grupo = '0496'")
 	i = 2
 	body4 = []
 	for row in cursor.fetchall():
@@ -83,11 +84,11 @@ def ambAlum(cnn, cursor):
 		
 		
 def app(cnn, cursor):
-	row = cursor.execute("select * from Grupos where grupo = '0411' or grupo = '0412' or grupo = '0416' or grupo = '0462' or grupo = '0469' or grupo = '0499' or grupo = '0500' or grupo = '0480' or grupo = '0481' or grupo = '0482' or grupo = '0496'")
+	row = cursor.execute("select * from Grupos where grupo = '0411' or grupo = '0412' or grupo = '0415' or grupo = '0416' or grupo = '0462' or grupo = '0469' or grupo = '0499' or grupo = '0500' or grupo = '0480' or grupo = '0481' or grupo = '0482' or grupo = '0496'")
 	i = 2
 	body = []
 	for row in cursor.fetchall():
-		for conta in cursor.execute("select sum(Vr_real) from orcam where Grupo=? and anomes=? and Ccusto >= '0300' and Ccusto != '0510' and Ccusto <= '0601' ", row.Grupo, cdate):
+		for conta in cursor.execute("select sum(Vr_real) from orcam where Grupo=? and anomes=? and Ccusto >= '0300' and Ccusto != '0510' and Ccusto <= '0601' or grupo=? and anomes=? and Ccusto >='0810' and Ccusto <= '0812' and Ccusto != '0510'", row.Grupo, cdate, row.Grupo, cdate):
 			sub = u"ORÇAM: Valor Real por Conta"
 			if conta[0] != None:
 				value_real = str("%0.2f" % (conta[0])).replace('.',',')
@@ -101,7 +102,7 @@ def app(cnn, cursor):
 	<font face="Calibri" size="3" color = "black">
 	</head>
 	<body>
-		<b>AÇO:</b> soma do CC >= 0300 e <= 0600 com exceção do CC 0510
+		<b>AÇO:</b> soma do CC >= 0300 e <= 0600 e CC 0810 até 0812, com exceção do CC 0510
 		<br>
 		<b>ALUM:</b> soma do CC >= 0300 e <= 864 com exceção do CC 0510
 	
