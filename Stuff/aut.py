@@ -231,6 +231,7 @@ for item in n:
 				pyautogui.press('enter')
 				time.sleep(0.5)
 			f.close()
+			os.remove(f)
 		pyautogui.press('f4')
 		time.sleep(1)
 	pyautogui.press('f4')
