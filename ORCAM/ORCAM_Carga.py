@@ -16,6 +16,7 @@ import time
 from ctypes import *
 import smtplib
 import mimetypes
+from openpyxl import Workbook
 
 emailfrom = "ORCAM@maxionwheels.com"
 emailto = "rafael.oliveira@maxionwheels.com"
