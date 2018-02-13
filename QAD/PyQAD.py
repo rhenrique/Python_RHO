@@ -122,6 +122,7 @@ def quest(num):
 					small_file.close()
 					long_file.close()
 					output_file.close()
+		os.remove(login)
 
 def ask():
     newline = raw_input("Adicionar mais usuarios?\n- [s] - para SIM;\n- [n] - para NAO.\n")
@@ -218,9 +219,9 @@ for item in n:
 	
 	# Verifica se o arquivo login_QAD.txt existe
 	file = os.path.isfile(l[num]+ '_QAD.txt')
-	type(file)
+	fileName = (l[num] + '_QAD.txt')
 	if file == True:
-		print 'entrou aqui?'
+		gr = 0
 		with open(l[num] + '_QAD.txt') as f:
 			groupList = f.readlines()
 			for line in groupList:
@@ -230,15 +231,18 @@ for item in n:
 				time.sleep(0.5)
 				pyautogui.press('enter')
 				time.sleep(0.5)
+				gr = gr + 1
 			f.close()
-			os.remove(f)
+		if gr >= 2:
+			pyautogui.press('f4')
+			time.sleep(0.5)
 		pyautogui.press('f4')
+		os.remove(fileName)
 		time.sleep(1)
 	pyautogui.press('f4')
 	time.sleep(1)
-	pyautogui.press('f4')
-	time.sleep(1)
 	pyautogui.typewrite('s')
+	time.sleep(0.5)
 	pyautogui.press('enter')
 	time.sleep(1)
 	pyautogui.press('f4')
@@ -313,4 +317,5 @@ networkPath = r'O:\Controle de Acesso - B5_15\Solicitacao de Acesso - QAD\2017\\
 
 shutil.copy2(fl, networkPath + fl)
 print "The file " + fl +  " created was moved to " + networkPath
+os.remove(fl)
 time.sleep(5)
