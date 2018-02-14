@@ -3,7 +3,7 @@ from PIL import ImageGrab
 import cv2
 import time
 
-img1 = cv2.imread('Serpent_Spawn.gif',0)
+img1 = cv2.imread('Serpent_Spawn-1.png',0)
 w, h = img1.shape[::-1]
 
 def process_img(image):
@@ -27,7 +27,6 @@ def main():
 		for pt in zip(*loc[::-1]):
 			cv2.rectangle(new_screen, pt, (pt[0] + w, pt[1] + h), (0,0,255), 2)
 			print "reconhecido"
-
 		cv2.imshow('window', new_screen)
         #cv2.imshow('window',cv2.cvtColor(screen, cv2.COLOR_BGR2RGB))
 		if cv2.waitKey(25) & 0xFF == ord('q'):
