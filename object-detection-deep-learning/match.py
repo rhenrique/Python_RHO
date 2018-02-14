@@ -3,7 +3,7 @@ from PIL import ImageGrab
 import cv2
 import time
 
-img1 = cv2.imread('Serpent_Spawn-1.png',0)
+img1 = cv2.imread('Serpent_Spawn-0.png',0)
 w, h = img1.shape[::-1]
 
 def process_img(image):
