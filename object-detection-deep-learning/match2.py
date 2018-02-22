@@ -35,8 +35,8 @@ def check(pt):
 		print loc
 		top_left = max_loc
 		bottom_right = (top_left[0] + w, top_left[1] + h)
-		#for pt in zip(*loc[::-1]):
 		#cv2.rectangle(new_screen, pt, (pt[0] + w, pt[1] + h), (0,0,255), 2)
+		#for pt in zip(*loc[::-1]):
 		pt = []
 		for pt in zip(*loc[::-1]):
 			cv2.rectangle(new_screen, top_left, bottom_right, (0,0,255), 2)
@@ -78,7 +78,7 @@ def main():
 			cv2.rectangle(new_screen, top_left, bottom_right, (0,0,255), 2)
 			print pt
 			lala = check(pt)
-			#utogui.moveTo(pt)
+			#pyautogui.moveTo(pt)
 			
 		cv2.imshow('window', new_screen)
         #cv2.imshow('window',cv2.cvtColor(screen, cv2.COLOR_BGR2RGB))

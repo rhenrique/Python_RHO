@@ -3,7 +3,7 @@ import os
 import time
 
 time.sleep(5)
-with open('daylight.txt') as f:
+with open('daylight_users.txt') as f:
 	dusers = f.readlines()
 	for line in dusers:
 		user = line.rstrip('\n')
