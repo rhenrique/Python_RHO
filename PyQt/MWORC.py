@@ -2,6 +2,7 @@ import sys
 from PyQt4 import QtGui, QtCore
 from PyQt4.QtSql import *
 import dbconn
+import time
 
 
 class SecondWindow(QtGui.QMainWindow):
@@ -42,6 +43,17 @@ class Window(QtGui.QMainWindow):
 		#mainMenu = self.menuBar()
 		#fileMenu = mainMenu.addMenu('&File')
 		#fileMenu.addAction(extractAction)
+		
+		#Progresso
+		self.progress = QtGui.QProgressBar(self)
+		self.progress.setGeometry(200, 80, 250, 20)
+		
+		#Botão de Progresso
+		self.btn = QtGui.QPushButton('Download', self)
+		self.btn.move(200, 120)
+		self.btn.clicked.connect(self.download)
+		
+		
 		
 		#Arquivo
 		self.statusBar()
@@ -85,7 +97,32 @@ class Window(QtGui.QMainWindow):
 	def close_application(self):
 		print("whooaaaa so custom!!!")
 		sys.exit()
-
+	def download(self):
+		dbconn.cursor.execute("delete from orcam")
+		dbconn.cursor.commit()
+		self.completed = 0
+		fileName = 'ORCAM.txt'
+		with open('ORCAM.txt') as f:
+			line_count = 0
+			for line in f:
+				line_count += 1
+		f.close()
+		countline = (100 / line_count)
+		print(countline)
+		while self.completed <= 100:
+			with open(fileName) as f:
+				groupList = f.readlines()
+				for line in groupList:
+					self.progress.setValue(self.completed)
+					#print(line)
+					#print(line[:4])
+					#print(line[4:8])
+					#print(line[8:14])
+					dbconn.cursor.execute("update dbo.orcam set Vr_Budget=?, Vr_real=? where Ccusto=? and Grupo=? and Anomes=?",line[14:29], line[29:44], line[:4], line[4:8], line[8:14])
+					#dbconn.cursor.execute("INSERT INTO orcam VALUES (?,?,?,?,?,1,1,?,?,1,?,NULL,NULL,NULL,NULL)", line[:4], line[4:8], line[8:14], line[14:29], line[29:44], line[14:29], line[14:29], line[14:29])
+					dbconn.cursor.commit()
+					self.completed += countline
+					#print(self.completed)
 
 def run():
 	app = QtGui.QApplication(sys.argv)

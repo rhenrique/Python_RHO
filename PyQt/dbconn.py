@@ -29,23 +29,23 @@ cursor = cnn.cursor()
 
 
 	
-row = cursor.execute("select * from ccusto where ccusto >= '0100'")
+#row = cursor.execute("select * from ccusto where ccusto >= '0100'")
 #for row in cursor.fetchall():
 
 
  
-class MyTable(QTableWidget):
-	def __init__(self, *args):
-		QTableWidget.__init__(self, *args)
-		self.setmydata()
-		self.resizeColumnsToContents()
-		self.resizeRowsToContents()
- 
-	def setmydata(self):
-		self.setRowCount(cursor.rowcount)
-		for row, form in enumerate(cursor):
-			for column, item in enumerate(form):
-				self.setItem(row, column, self.QtGui.QTableWidgetItem(str(item)))  
+#class MyTable(QTableWidget):
+#	def __init__(self, *args):
+#		QTableWidget.__init__(self, *args)
+#		self.setmydata()
+#		self.resizeColumnsToContents()
+#		self.resizeRowsToContents()
+
+#	def setmydata(self):
+#		self.setRowCount(cursor.rowcount)
+#		for row, form in enumerate(cursor):
+#			for column, item in enumerate(form):
+#				self.setItem(row, column, self.QtGui.QTableWidgetItem(str(item)))  
  
 def main(args):
     app = QApplication(args)
