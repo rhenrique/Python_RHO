@@ -23,7 +23,9 @@ ok = db.open()
 cnn = pyodbc.connect('DRIVER='+driver+';PORT=port;SERVER='+server+';PORT=1443;DATABASE='+database+';UID='+username+';PWD='+password)
 #cnn.setencoding(str, encoding='utf-8')
 #cnn.setencoding(unicode, encoding='utf-8', ctype=pyodbc.SQL_CHAR)
+
 cursor = cnn.cursor()
+
 
 # True if connected
 

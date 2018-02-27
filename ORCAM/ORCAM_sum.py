@@ -47,8 +47,8 @@ username = 'dsserver'
 password = 'Maxion123@'
 driver = '{SQL Server}' # Driver necessário para conecta ao banco de dados do MSSQL
 port = '1433'
-emailto = 'alex.bacalhau@maxionwheels.com;gilberto.ferreira@maxionwheels.com;marcos.degaspre@maxionwheels.com'
-#emailto = 'rafael.oliveira@maxionwheels.com'
+#emailto = 'alex.bacalhau@maxionwheels.com;gilberto.ferreira@maxionwheels.com;marcos.degaspre@maxionwheels.com'
+emailto = 'rafael.oliveira@maxionwheels.com'
 
 def conn(ambiente):
 	if ambiente == "aco":
@@ -76,7 +76,10 @@ def ambAlum(cnn, cursor):
 		for conta in cursor.execute("select sum(Vr_real) from orcam where anomes=? and grupo=? and Ccusto >= '0300' and Ccusto != '0510' and Ccusto <= '0864' ", cdate, row.Grupo):
 			if conta[0] != None:
 				
-				value_real = str("%0.2f" % (conta[0])).replace('.',',')
+				#value_real = str("%0.2f" % (conta[0])).replace('.',',')
+				value_real_1 = float(conta[0])
+				
+				value_real = '{:,}'.format(value_real_1).replace(',','.')
 				ws2.cell(row=i, column=1).value = row.Grupo
 				ws2.cell(row=i, column=2).value = str(row.Descricao.encode('ascii', 'ignore'))				
 				ws2.cell(row=i, column=3).value = value_real
