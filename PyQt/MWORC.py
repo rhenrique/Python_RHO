@@ -207,12 +207,87 @@ class External(QThread):
 					chk = dbconn.cursor.fetchone()
 					if chk == None:
 						print(line[:4])
-						dbconn.cursor.execute("INSERT INTO ccustob VALUES (?,?,'')", line[:4, line[4:44]])
+						dbconn.cursor.execute("INSERT INTO ccustob VALUES (?,?,'')", line[:4], line[4:44]])
 						dbconn.cursor.commit()
 					self.completed += countline
 					self.progress.setValue(self.completed)	
 					
+# Importação do MIOLO.txt					
+		
+		self.completed = 0
+		fileName = 'MIOLO.txt'
+		with open(fileName) as f:
+			line_count = 0
+			for line in f:
+				line_count += 1
+		f.close()
+		countline = (100 / line_count)
+		print(countline)
+		dbconn.cursor.execute("delete from MIOLO")
+		dbconn.cursor.commit()
+		while self.completed <= TIME_LIMIT:
+			with open(fileName) as f:
+				groupList = f.readlines()
+				for line in groupList:
+					dbconn.cursor.execute("INSERT INTO miolo VALUES (?)", line[1:6])
+					dbconn.cursor.commit()
+					self.completed += countline
+					self.progress.setValue(self.completed)
 
+# Importação do CCXCCB.txt					
+		
+		self.completed = 0
+		fileName = 'CCXCCB.txt'
+		with open(fileName) as f:
+			line_count = 0
+			for line in f:
+				line_count += 1
+		f.close()
+		countline = (100 / line_count)
+		print(countline)
+		dbconn.cursor.execute("delete from CADMAT")
+		dbconn.cursor.commit()
+		while self.completed <= TIME_LIMIT:
+			with open(fileName) as f:
+				groupList = f.readlines()
+				for line in groupList:
+					dbconn.cursor.execute("select * from cadmat where codmat=?",line[:13])
+					chk = dbconn.cursor.fetchone()
+					if chk != None:
+						if str(line[13:63]) != chk.Descricao:
+							dbconn.cursor.execute("update cadmat set Descricao =? where codmat=?",str(line[13:63]),line[:13])
+							dbconn.cursor.commit()
+					else:
+						dbconn.cursor.execute("INSERT INTO ")
+						
+					
+					dbconn.cursor.execute("INSERT INTO CADMAT VALUES (?,?)", line[1:4],line[4:8])
+					dbconn.cursor.commit()
+					self.completed += countline
+					self.progress.setValue(self.completed)					
+
+# Importação do CADMAT.txt					
+		
+		self.completed = 0
+		fileName = 'CADMAT.txt'
+		with open(fileName) as f:
+			line_count = 0
+			for line in f:
+				line_count += 1
+		f.close()
+		countline = (100 / line_count)
+		print(countline)
+		dbconn.cursor.execute("delete from CCXCCB")
+		dbconn.cursor.commit()
+		while self.completed <= TIME_LIMIT:
+			with open(fileName) as f:
+				groupList = f.readlines()
+				for line in groupList:
+					dbconn.cursor.execute("INSERT INTO CCXCCB VALUES (?,?)", line[1:4],line[4:8])
+					dbconn.cursor.commit()
+					self.completed += countline
+					self.progress.setValue(self.completed)		
+					
 class SecondWindow(QtGui.QMainWindow):
 	def __init__(self, parent=None):
 		super(SecondWindow, self).__init__(parent)
@@ -224,9 +299,9 @@ class Window(QtGui.QMainWindow):
 
 	def __init__(self, parent=None):
 		super(Window, self).__init__(parent)
-		self.setWindowTitle("PyQT tuts!")
+		self.setWindowTitle("Maxion Wheels - ORÇAM")
 		self.setGeometry(500, 500, 500, 300)
-		self.setWindowIcon(QtGui.QIcon('pythonlogo.png'))
+		self.setWindowIcon(QtGui.QIcon('ORC_icon.ico'))
 
 		extractAction = QtGui.QAction("&Forecast", self)
 		#extractAction.setShortcut("Ctrl+Q")
